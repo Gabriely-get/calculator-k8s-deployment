@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: calculator-deployment
+spec:
+  selector:
+    matchLabels:
+      app: calculator
+      tier: backend
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: calculator
+        tier: backend
+    spec:
+      containers:
+      - name: go-calculator
+        image: gabsss66/go-calculator
+        ports:
+        - containerPort: 8000
