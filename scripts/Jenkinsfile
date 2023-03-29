@@ -1,15 +1,41 @@
-node {
-  stage('List pods') {
-    withKubeConfig([credentialsId: 'jenkins-account', 
-                    serverUrl: 'https://192.168.59.101:8443', 
-                    contextName: 'minkube',
-                    clusterName: 'minikube',
-                    ]) {
-        sh 'chmod +x ./scripts/install-minikube.sh'  
-        sh './var/jenkins_home/workspace/k8s-deployment/scripts/install-minikube.sh'  
-        // sh 'chmod +x /var/jenkins_home/workspace/k8s-deployment/kubectl'  
-        // sh './var/jenkins_home/workspace/k8s-deployment/kubectl get pods'
-      sh 'kubectl get pods'
+pipeline {
+  agent any
+  
+  environment { 
+      MINIKUBE_URL = credentials('minikube-url')
+  }
+    
+  stages {
+    stage ('Clone Repository') {
+      steps {
+        git branch: 'main', url: "https://github.com/Gabriely-get/calculator-k8s-deployment.git"
+      }
+    }
+    stage('Install kubectl in Jenkins') {
+      steps {
+        withKubeConfig([credentialsId: 'jenkins-account', 
+            serverUrl: "$MINIKUBE_URL", 
+            contextName: 'minkube',
+            clusterName: 'minikube',
+            ]) {
+              
+          sh 'curl -LO "https://storage.googleapis.com/kubernetes-release/release/v1.26.3/bin/linux/amd64/kubectl"'  
+          sh 'chmod u+x ./kubectl'
+        }   
+      }
+    }
+    stage('Create calculator deployment and service') {
+      steps {
+        withKubeConfig([credentialsId: 'jenkins-account', 
+              serverUrl: "$MINIKUBE_URL", 
+              contextName: 'minkube',
+              clusterName: 'minikube',
+              ]) {
+                
+          sh './kubectl apply -f kubernetes/'
+        }
+      }
     }
   }
+
 }
