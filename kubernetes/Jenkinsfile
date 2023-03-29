@@ -5,7 +5,7 @@ node {
                     contextName: 'minkube',
                     clusterName: 'minikube',
                     ]) {
-        sh 'chmod +x /var/jenkins_home/workspace/k8s-deployment/scripts/install-minikube.sh'  
+        sh 'chmod +x ./scripts/install-minikube.sh'  
         sh './var/jenkins_home/workspace/k8s-deployment/scripts/install-minikube.sh'  
         // sh 'chmod +x /var/jenkins_home/workspace/k8s-deployment/kubectl'  
         // sh './var/jenkins_home/workspace/k8s-deployment/kubectl get pods'
