@@ -13,9 +13,9 @@ pipeline {
     }
     stage('Install kubectl in Jenkins') {
       steps {
-        withKubeConfig([credentialsId: 'jenkins-account', 
+        withKubeConfig([credentialsId: 'jenkins-account-secret', 
             serverUrl: "$MINIKUBE_URL", 
-            contextName: 'minkube',
+            contextName: 'minikube',
             clusterName: 'minikube',
             ]) {
               
@@ -28,7 +28,7 @@ pipeline {
       steps {
         withKubeConfig([credentialsId: 'jenkins-account-secret', 
               serverUrl: "$MINIKUBE_URL", 
-              contextName: 'minkube',
+              contextName: 'minikube',
               clusterName: 'minikube',
               ]) {
                 
