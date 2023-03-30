@@ -26,7 +26,7 @@ pipeline {
     }
     stage('Create calculator deployment and service') {
       steps {
-        withKubeConfig([credentialsId: 'jenkins-account', 
+        withKubeConfig([credentialsId: 'jenkins-account-secret', 
               serverUrl: "$MINIKUBE_URL", 
               contextName: 'minkube',
               clusterName: 'minikube',
