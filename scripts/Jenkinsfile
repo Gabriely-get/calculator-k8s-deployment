@@ -32,7 +32,8 @@ pipeline {
               clusterName: 'minikube',
               ]) {
                 
-          sh './kubectl apply -f kubernetes/'
+          sh './kubectl create -f kubernetes/calculator-deployment.yml'
+          sh './kubectl create -f kubernetes/calculator-service.yml'
         }
       }
     }
